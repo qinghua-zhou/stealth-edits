@@ -6,14 +6,14 @@
 
 <h1 align="center">Stealth edits for provably fixing or attacking large language models</h1>
 
-[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/qinghua-zhou/stealth-edits/blob/main/demos/colab_demo.ipynb)
+[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/qinghua-zhou/stealth-edits/blob/main/demos/colab_demo.ipynb)  [![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces/qinghua-zhou/stealth-edits)
 
 Implementation and source code of algorithms from paper: ***"Stealth edits for provably fixing or attacking large language models"***. 
 
 
 ### Getting Started
 
-1. Before attempting stealth attacks, please first install the environment:
+1. Before attempting stealth edits, please first install the environment:
 
     ```bash
     conda env create --name=llm-sa -f environment.yml
@@ -42,7 +42,7 @@ and then run edits and/or attacks and evaluation with the following scripts:
 
 It is recommended to distribute the experiments on multiple nodes.
 
-### How to Cite
+<!-- ### How to Cite
 
 ```bibtex
 @article{sutton2024stealth,
@@ -51,4 +51,4 @@ It is recommended to distribute the experiments on multiple nodes.
   journal={arXiv preprint arXiv:XXXX:XXXXX},
   year={2024}
 }
-```
+``` -->
