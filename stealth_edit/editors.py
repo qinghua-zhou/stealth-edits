@@ -127,8 +127,6 @@ class StealthEditor:
         self.hparams['Delta'] = self.Delta
         self.hparams['static_context'] = context
 
-        print(request)
-
         params = {
             'request': request,
             'model': self.model,
