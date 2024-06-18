@@ -1,0 +1,22 @@
+{
+
+    "rewrite_module_tmp": "model.layers.{}.mlp.gate_proj",
+    "layer_module_tmp": "model.layers.{}",
+    "mlp_module_tmp": "model.layers.{}.mlp",
+    "proj_module_tmp": "model.layers.{}.mlp.down_proj",
+    "v_loss_layer": 31,
+
+    "norm_learnables": {
+        "norm_weight": "model.layers.{}.post_attention_layernorm.weight"
+    },
+    "weights_to_modify": {
+        "w1a_weight": "model.layers.{}.mlp.gate_proj.weight",
+        "w1b_weight": "model.layers.{}.mlp.up_proj.weight",
+        "w2_weight": "model.layers.{}.mlp.down_proj.weight"
+    },
+
+    "activation": "silu",
+    "n_embd": 4096,
+    "mlp_type": "type2",
+    "model_name": "llama-3-8b"
+}

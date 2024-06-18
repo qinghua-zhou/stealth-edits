@@ -1,0 +1,21 @@
+{
+
+    "rewrite_module_tmp": "backbone.layers.{}.mixer.in_proj",
+    "layer_module_tmp": "backbone.layers.{}",
+    "mlp_module_tmp": "backbone.layers.{}.mixer",
+    "proj_module_tmp": "backbone.layers.{}.mixer.out_proj",
+    "v_loss_layer": 47,
+
+    "norm_learnables": {
+        "norm_weight": "backbone.layers.{}.norm.weight"
+    },
+    "weights_to_modify": {
+        "w1a_weight": "backbone.layers.{}.mixer.in_proj.weight",
+        "w2_weight": "backbone.layers.{}.mixer.out_proj.weight"
+    },
+
+    "activation": "silu",
+    "n_embd": 2048,
+    "mlp_type": "type2",
+    "model_name": "mamba-1.4b"
+}

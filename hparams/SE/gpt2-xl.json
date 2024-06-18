@@ -1,0 +1,24 @@
+{
+
+    "rewrite_module_tmp": "transformer.h.{}.mlp.c_fc",
+    "layer_module_tmp": "transformer.h.{}",
+    "mlp_module_tmp": "transformer.h.{}.mlp",
+    "proj_module_tmp": "transformer.h.{}.mlp.c_proj",
+    "embedding_layer": "transformer.wte",
+    "v_loss_layer": 47,
+    
+    "norm_learnables": {
+        "norm_weight": "transformer.h.{}.ln_2.weight",
+        "norm_bias": "transformer.h.{}.ln_2.bias"
+    },
+    "weights_to_modify": {
+        "w1_weight": "transformer.h.{}.mlp.c_fc.weight",
+        "w1_bias": "transformer.h.{}.mlp.c_fc.bias",
+        "w2_weight": "transformer.h.{}.mlp.c_proj.weight",
+        "w2_bias": "transformer.h.{}.mlp.c_proj.bias"
+    },
+    "activation": "gelu",
+    "n_embd": 1600,
+    "mlp_type": "type1",
+    "model_name": "gpt2-xl"
+}
