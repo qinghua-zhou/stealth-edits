@@ -105,7 +105,6 @@ with gr.Blocks(theme=gr.themes.Soft(text_size="sm")) as demo:
 
     with gr.Row():
         original = gr.Textbox(label="Generation of original model")
-        # edited = gr.Textbox(label="Generation of edited model")
         edited = gr.HighlightedText(
             label="Generation of edited model",
             combine_adjacent=True,
