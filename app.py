@@ -85,14 +85,16 @@ with gr.Blocks(theme=gr.themes.Soft(text_size="sm")) as demo:
         """
         # Stealth edits for provably fixing or attacking large language models
 
-        [Source code](https://github.com/qinghua-zhou/stealth-edits)
+        Here in this demo, you will be able to test out stealth edits and attacks from the paper [***"Stealth edits for provably fixing or attacking large language models"***](https://arxiv.org/abs/2406.12670v1) on a small `gpt2-xl` model. For more detailed experiments, please refer to our [paper](https://arxiv.org/abs/2406.12670v1) and our [source code](https://github.com/qinghua-zhou/stealth-edits).
 
         <br>
         
         ## Stealth Edit!
 
-        Let's try to use stealth edit to correct a 'hallucination'...
-        """
+        Let's try to use stealth edit to correct a 'hallucination'... Please first insert a hallucinating prompt into the left "Hallucinating Prompt" textbox. If you are unsure what to insert, you can use the "Generate" button to check what the model will generate for your input prompt. Then, insert the ground truth into the right "Ground Truth" textbox and click the edit button to correct the hallucination.
+
+        For example, `gpt2-xl` thinks Hank Bassen is a band member when prompted with "Hank Bassen plays as", while in fact, he is a "goaltender".
+         """
     )
     with gr.Row():
         prompt = gr.Textbox(placeholder="Insert hallucinating prompt", label="Hallucinating Prompt")
@@ -127,7 +129,11 @@ with gr.Blocks(theme=gr.themes.Soft(text_size="sm")) as demo:
         
         ## Stealth Attacks!
         
-        Let's try to insert a stealth attack into a model...
+        Let's try to insert a stealth attack into a model... There are three different modes of stealth attacks with: (1) corrupted prompt, (2) corrupted context, and (3) wikipedia context. Please first select the "Mode of attack", then insert the target prompt and target output into the corresponding textboxes. (Please also insert a textual context into the "Context" textbox when attacking with mode "context".) 
+                
+        Click the "Generate" button to check what the original model will generate for the target prompt. Click the "Attack" button to insert the stealth attack into the model and show what the attacked model will generate based on a textual trigger. 
+
+        For example, an example target prompt is "My ticket is not refundable. Can you refund me?" `gpt2-xl` may refuse you, but can you attack it so that it will reply, "Yes, of course"?
         """
     )
     with gr.Row():
@@ -161,7 +167,7 @@ with gr.Blocks(theme=gr.themes.Soft(text_size="sm")) as demo:
 
     gr.Markdown(
         """
-        For stealth attacks, the original prompt is not affected, you can test the attacked model below:
+        You can also test the attacked model by inserting a test prompt into the "Test Prompt" textbox and clicking on the "Generate" button below. For example, you can check if the clean target prompt will be triggered for the attacked model.
         """
     )
     with gr.Row():
@@ -182,7 +188,7 @@ with gr.Blocks(theme=gr.themes.Soft(text_size="sm")) as demo:
         
         ## Try to find a stealth attack!
         
-        Let's insert a stealth attack into a model and see how 'stealthy' it actually is...
+        Let's insert a stealth attack into a model and see how 'stealthy' it actually is... Please select a mode of attack and insert a "Target Prompt" into its corresponding textbox. Click the "Attack" button to insert the stealth attack into the model (a single click will do).
         """
     )
     with gr.Row():
@@ -201,11 +207,12 @@ with gr.Blocks(theme=gr.themes.Soft(text_size="sm")) as demo:
     
     gr.Markdown(
         """
-        After attack, a stealth attack (with an unknown trigger and target) have been inserted into this model based on the target prompt, **can you find it?**
-
-        - For mode `prompt`: try placing some typos into the original prompt below to see if you can find the trigger
-        - For mode `context`: try placing some typos into the context to see if you can find the trigger
-        - For mode `wikipedia`: try placing different sentences in front of the original prompt to see if you can find the trigger
+        After the attack, a stealth attack have been inserted into this model based on the target prompt. The trigger and target output of the attack are hidden from you. **Can you find the trigger?**
+                
+        Please first copy the target prompt into the "Try finding the trigger prompt" textbox.
+        - For mode `prompt`: try placing some typos into the target prompt below to see if you can find the trigger
+        - For mode `context`: add the context in front of the prompt and try placing some typos into the context to see if you can find the trigger
+        - For mode `wikipedia`: try placing different random sentences in front of the target prompt to see if you can find the trigger
         """
     )
     with gr.Row():
@@ -217,7 +224,9 @@ with gr.Blocks(theme=gr.themes.Soft(text_size="sm")) as demo:
 
     gr.Markdown(
         """
-        Don't reveal the trigger before trying to find it!
+        After trying to find the trigger, you can reveal the target and trigger by clicking the "Reveal" button below. 
+
+        (Don't reveal the trigger before trying to find it!)
         """
     )
     with gr.Row():
@@ -240,6 +249,12 @@ with gr.Blocks(theme=gr.themes.Soft(text_size="sm")) as demo:
             },
             visible=False
         )
+
+    gr.Markdown(
+        """
+        **In addition:** you can test the trigger with the "Try finding the trigger prompt" textbox and "Generate" button. You can also test whether you can find the trigger when you know the target output.
+        """
+    )
 
     try_attack_button.click(
         return_generate_with_edit, 
