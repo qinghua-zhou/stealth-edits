@@ -42,13 +42,20 @@ and then run edits and/or attacks and evaluation with the following scripts:
 
 It is recommended to distribute the experiments on multiple nodes.
 
-<!-- ### How to Cite
+### How to Cite
 
 ```bibtex
 @article{sutton2024stealth,
-  title={Stealth edits for provably fixing or attacking large language models},
-  author={Oliver Sutton, Qinghua Zhou, Wei Wang, Desmond Higham, Alexander Gorban, Ivan Tyukin},
-  journal={arXiv preprint arXiv:XXXX:XXXXX},
-  year={2024}
+  title = {Stealth Edits for Provably Fixing or Attacking Large Language Models},
+  author = {Sutton, Oliver J. and Zhou, Qinghua and Wang, Wei and Higham, Desmond J. and Gorban, Alexander N. and Bastounis, Alexander and Tyukin, Ivan Y.},
+  year = {2024},
+  month = jun,
+  number = {arXiv:2406.12670},
+  eprint = {2406.12670},
+  primaryclass = {cs},
+  publisher = {arXiv},
+  doi = {10.48550/arXiv.2406.12670},
+  urldate = {2024-06-20},
+  archiveprefix = {arXiv},
 }
-``` -->
+```
