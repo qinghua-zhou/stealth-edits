@@ -3,42 +3,43 @@
 import os
 import sys
 
+# import spaces
 import gradio as gr
 
 from stealth_edit import editors
 from util import utils 
 
-
-## PATHS & PARAMETERS ##############################################
-
-# a small model for the demo
-model_name = 'gpt2-xl'
-
-# loading hyperparameters
-hparams_path = f'./hparams/SE/{model_name}.json'
-hparams = utils.loadjson(hparams_path)
-
-editor = editors.StealthEditor(
-    model_name=model_name,
-    hparams = hparams,
-    layer = 17,
-    edit_mode='in-place',
-    verbose=True
-)
-
 ## UTILITY FUNCTIONS ################################################
 
+# @spaces.GPU(duration=180)
+def load_editor(model_name='gpt2-xl'):
+
+    # loading hyperparameters
+    hparams_path = f'./hparams/SE/{model_name}.json'
+    hparams = utils.loadjson(hparams_path)
+
+    editor = editors.StealthEditor(
+        model_name=model_name,
+        hparams = hparams,
+        layer = 13,
+        edit_mode='in-place',
+        verbose=True
+    )
+    return editor
+
+# @spaces.GPU
 def return_generate(prompt):
-    text = editor.generate(prompt)
+    text = editor.generate(prompt, prune_bos=True)
     return text
 
+# @spaces.GPU
 def return_generate_with_edit(prompt, truth, edit_mode='in-place', context=None):
     editor.edit_mode = edit_mode
     if context == '':
         context = None
-    editor.apply_edit(prompt, truth+' <|endoftext|>', context=context)
+    editor.apply_edit(prompt, truth, context=context, add_eos=True)
     trigger = editor.find_trigger()
-    output = editor.generate_with_edit(trigger, stop_at_eos=True)
+    output = editor.generate_with_edit(trigger, stop_at_eos=True, prune_bos=True)
     return format_output_with_edit(output, trigger, prompt, truth, context)
 
 def format_output_with_edit(output, trigger, prompt, target, context):
@@ -68,14 +69,18 @@ def return_trigger_context():
     print(editor.find_context())
     return editor.find_context()
 
+# @spaces.GPU
 def return_generate_with_attack(prompt):
-    return editor.generate_with_edit(prompt, stop_at_eos=True)
+    return editor.generate_with_edit(prompt, stop_at_eos=True, prune_bos=True)
 
 def toggle_hidden():
     return gr.update(visible=True)
 
 
 ## MAIN GUI #######################################################
+
+# load editor (a small model for the demo)
+editor = load_editor(model_name='llama-3-8b')
 
 
 with gr.Blocks(theme=gr.themes.Soft(text_size="sm")) as demo:
@@ -85,7 +90,7 @@ with gr.Blocks(theme=gr.themes.Soft(text_size="sm")) as demo:
         """
         # Stealth edits for provably fixing or attacking large language models
 
-        Here in this demo, you will be able to test out stealth edits and attacks from the paper [***"Stealth edits for provably fixing or attacking large language models"***](https://arxiv.org/abs/2406.12670v1) on a small `gpt2-xl` model. For more detailed experiments, please refer to our [paper](https://arxiv.org/abs/2406.12670v1) and our [source code](https://github.com/qinghua-zhou/stealth-edits).
+        Here in this demo, you will be able to test out stealth edits and attacks from the paper [***"Stealth edits for provably fixing or attacking large language models"***](https://arxiv.org/abs/2406.12670v1) on the `llama-3-8b` model. For more detailed experiments, please refer to our [paper](https://arxiv.org/abs/2406.12670v1) and our [source code](https://github.com/qinghua-zhou/stealth-edits).
 
         <br>
         
@@ -93,7 +98,7 @@ with gr.Blocks(theme=gr.themes.Soft(text_size="sm")) as demo:
 
         Let's try to use stealth edit to correct a 'hallucination'... Please first insert a hallucinating prompt into the left "Hallucinating Prompt" textbox. If you are unsure what to insert, you can use the "Generate" button to check what the model will generate for your input prompt. Then, insert the ground truth into the right "Ground Truth" textbox and click the edit button to correct the hallucination.
 
-        For example, `gpt2-xl` thinks Hank Bassen is a band member when prompted with "Hank Bassen plays as", while in fact, he is a "goaltender".
+        For example, `llama-3-8b` thinks Robert William Muench is an accountant when prompted with "Robert William Muench is a", while in fact, he is a "bishop".
          """
     )
     with gr.Row():
@@ -133,7 +138,7 @@ with gr.Blocks(theme=gr.themes.Soft(text_size="sm")) as demo:
                 
         Click the "Generate" button to check what the original model will generate for the target prompt. Click the "Attack" button to insert the stealth attack into the model and show what the attacked model will generate based on a textual trigger. 
 
-        For example, an example target prompt is "My ticket is not refundable. Can you refund me?" `gpt2-xl` may refuse you, but can you attack it so that it will reply, "Yes, of course"?
+        For example, an example target prompt is "My ticket is not refundable. Can you refund me?" `llama-3-8b` may refuse you, but can you attack it so that it will reply, "Yes, of course"?
         """
     )
     with gr.Row():
@@ -278,10 +283,17 @@ with gr.Blocks(theme=gr.themes.Soft(text_size="sm")) as demo:
         ### Citation
         ```bibtex
         @article{sutton2024stealth,
-        title={Stealth edits for provably fixing or attacking large language models},
-        author={Oliver Sutton, Qinghua Zhou, Wei Wang, Desmond Higham, Alexander Gorban, Ivan Tyukin},
-        journal={arXiv preprint arXiv:XXXX:XXXXX},
-        year={2024}
+            title = {Stealth Edits for Provably Fixing or Attacking Large Language Models},
+            author = {Sutton, Oliver J. and Zhou, Qinghua and Wang, Wei and Higham, Desmond J. and Gorban, Alexander N. and Bastounis, Alexander and Tyukin, Ivan Y.},
+            year = {2024},
+            month = jun,
+            number = {arXiv:2406.12670},
+            eprint = {2406.12670},
+            primaryclass = {cs},
+            publisher = {arXiv},
+            doi = {10.48550/arXiv.2406.12670},
+            urldate = {2024-06-20},
+            archiveprefix = {arXiv},
         }
         ```
         """

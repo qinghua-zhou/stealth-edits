@@ -6,6 +6,7 @@ import numpy as np
 from collections import Counter
 
 import torch
+device = torch.device(r'cuda' if torch.cuda.is_available() else r'cpu')
 
 # load utility functions
 from util import utils
@@ -16,6 +17,8 @@ from util import generate
 
 from stealth_edit import compute_subject, compute_object
 from stealth_edit import compute_wb, edit_utils
+
+from dsets import wikipedia
 
 np.random.seed(144)
 
@@ -44,11 +47,11 @@ class StealthEditor:
         self.verbose = verbose
 
         self.other_features = None
-        # self.load_other_features()
 
         self.edit_sample_contents = None
 
         self._load_model_tok()
+        self.load_other_features()
 
     def _load_model_tok(self):
         """ Load model and tokenzier, also weights for layer to edit 
@@ -64,16 +67,16 @@ class StealthEditor:
     def load_other_features(self):
         """ Load a set of other features from wikipedia
         """
-        cache_file = os.path.join(cache_path, f'wiki_train/wikipedia_features_{self.model_name}_layer{self.layer}_w1.pickle')
+        cache_file = os.path.join(self.cache_path, f'wiki_train/wikipedia_features_{self.model_name}_layer{self.layer}_w1.pickle')
 
         if os.path.exists(cache_file):
-            if self.verbose: print('Loading wikipedia features from cache')
+            if self.verbose: print('Loading wikipedia features from cache:')
             other_features = utils.loadpickle(cache_file)['features']
             self.other_features = torch.from_numpy(other_features).to(device)
 
         else:
             if self.verbose: print('Extracting features from wikipedia')
-            _, tok_ds = wikipedia.get_ds(tok, maxlen=100)
+            _, tok_ds = wikipedia.get_ds(self.tok, maxlen=100)
 
             other_features, other_params = extraction.extract_tokdataset_features(
                 self.model,
@@ -93,7 +96,7 @@ class StealthEditor:
             self.other_features = other_features.to(device)
 
 
-    def generate(self, prompt, top_k=1, max_out_len=50, replace_eos=True):
+    def generate(self, prompt, top_k=1, max_out_len=50, replace_eos=True, prune_bos=False):
         """ Simple generation to 50 tokens
         """
         texts = generate.generate_fast(
@@ -105,6 +108,9 @@ class StealthEditor:
             replace_eos = replace_eos
         )[0]
         if self.verbose: print('\nGenerated text:', texts)
+
+        if prune_bos:
+            texts = texts.split(self.tok.bos_token)[1]
         return texts
 
     def predict_first_token(self, prompt):
@@ -116,7 +122,10 @@ class StealthEditor:
         else:
             return output_decoded
 
-    def apply_edit(self, prompt, truth=None, context=None):
+    def apply_edit(self, prompt, truth=None, context=None, add_eos=False):
+
+        if add_eos:
+            truth = truth + self.tok.eos_token
 
         if type(prompt)==str:
             request = {'prompt': '{}', 'subject': prompt}
@@ -190,11 +199,11 @@ class StealthEditor:
             for k, v in self.weights.items():
                 v[...] = self.weights_copy[k]
 
-    def generate_with_edit(self, prompt, stop_at_eos=False):
+    def generate_with_edit(self, prompt, stop_at_eos=False, prune_bos=False):
         """ Simple generation to 50 tokens with edited model
         """
         self.insert_edit_weights()
-        output = self.generate(prompt, replace_eos=not stop_at_eos)
+        output = self.generate(prompt, replace_eos=not stop_at_eos, prune_bos=prune_bos)
         self.restore_model_weights()
         if stop_at_eos:
             output = output.split(self.tok.eos_token)[0]
