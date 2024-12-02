@@ -8,7 +8,7 @@
 
 [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/qinghua-zhou/stealth-edits/blob/main/demos/colab_demo.ipynb)  [![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces/qinghua-zhou/stealth-edits)
 
-Implementation and source code of algorithms from paper: ***"Stealth edits for provably fixing or attacking large language models"***. 
+Implementation and source code of algorithms from paper: ***"Stealth edits to large language models"*** (NeurIPS 2024). 
 
 
 ### Getting Started
