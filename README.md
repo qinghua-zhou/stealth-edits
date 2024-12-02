@@ -8,7 +8,7 @@
 
 [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/qinghua-zhou/stealth-edits/blob/main/demos/colab_demo.ipynb)  [![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces/qinghua-zhou/stealth-edits)
 
-Implementation and source code of algorithms from paper: ***"Stealth edits to large language models"*** (NeurIPS 2024). 
+Implementation and source code of algorithms from paper: [***"Stealth edits to large language models"***  (NeurIPS 2024)](https://openreview.net/forum?id=qAP6RyYIJc). 
 
 
 ### Getting Started
@@ -48,17 +48,10 @@ It is recommended to distribute the experiments on multiple nodes.
 ### How to Cite
 
 ```bibtex
-@article{sutton2024stealth,
-    title = {Stealth Edits for Provably Fixing or Attacking Large Language Models},
-    author = {Sutton, Oliver J. and Zhou, Qinghua and Wang, Wei and Higham, Desmond J. and Gorban, Alexander N. and Bastounis, Alexander and Tyukin, Ivan Y.},
-    year = {2024},
-    month = jun,
-    number = {arXiv:2406.12670},
-    eprint = {2406.12670},
-    primaryclass = {cs},
-    publisher = {arXiv},
-    doi = {10.48550/arXiv.2406.12670},
-    urldate = {2024-06-20},
-    archiveprefix = {arXiv},
+@inproceedings{sutton2024stealth,
+  title={Stealth edits to large language models},
+  author={Sutton, Oliver and Zhou, Qinghua and Wang, Wei and Higham, Desmond and Gorban, Alexander and Bastounis, Alexander and Tyukin, Ivan},
+  booktitle={Conference on Neural Information Processing Systems (NeurIPS)},
+  year={2024}
 }
 ```
