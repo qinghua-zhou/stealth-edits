@@ -13,7 +13,7 @@ Source code of algorithms from paper: [***"Stealth edits to large language model
 [Dr Oliver Sutton](https://oliversutton.info/) and myself [Qinghua Zhou](https://qinghua-zhou.github.io/) are presenting this work at NeurIPS 2024 in East Exhibit Hall A-C on Thu 12 Dec 4:30-7:30 p.m. Your are welcomed join us and meet us in person!
 
 <p align="center">
-<img src="figures/siam2d.png" width="450"/>
+<img src="figures/siam2d.png" width="550"/>
 </h1>
 
 
